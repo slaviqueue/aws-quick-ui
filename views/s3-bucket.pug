@@ -1,0 +1,8 @@
+include mixins/app-wrapper.pug
+
++wrapper()
+  ul.objects-list 
+    each object in objects
+      li
+        a(href=`/s3/buckets/${bucket}/objects/${object}`)= object
+
