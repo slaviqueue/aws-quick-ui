@@ -7,24 +7,21 @@ export class S3Controller {
 
   @Get('/buckets')
   @Render('s3-buckets')
-  public getAllBuckets() {
-    return {
-      buckets: this.s3Service.getBuckets(),
-    }
+  public async getAllBuckets() {
+    const buckets = await this.s3Service.getBuckets()
+    return { buckets }
   }
 
   @Get('/buckets/:bucket')
   @Render('s3-bucket')
-  public getBucket(@Param('bucket') bucket: string) {
-    return {
-      bucket,
-      objects: this.s3Service.getBucketObjects(bucket),
-    }
+  public async getBucket(@Param('bucket') bucket: string) {
+    const objects = await this.s3Service.getBucketObjects(bucket)
+    return { bucket, objects }
   }
 
   @Get('/buckets/:bucket/objects/:object')
-  public getObject(@Param('bucket') bucket: string, @Param('object') object, @Response() res) {
-    const presignedUrl = this.s3Service.getObjectPresign(bucket, object)
+  public async getObject(@Param('bucket') bucket: string, @Param('object') object, @Response() res) {
+    const presignedUrl = await this.s3Service.getObjectPresign(bucket, object)
     return res.redirect(presignedUrl)
   }
 }

@@ -24,6 +24,7 @@
     "@nestjs/common": "^7.6.15",
     "@nestjs/core": "^7.6.15",
     "@nestjs/platform-express": "^7.6.15",
+    "aws-sdk": "^2.1045.0",
     "lodash": "^4.17.21",
     "open": "^8.4.0",
     "pug": "^3.0.2",
