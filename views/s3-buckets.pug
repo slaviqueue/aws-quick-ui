@@ -1,6 +1,8 @@
 include mixins/app-wrapper.pug
 
 +wrapper()
+  p Viewing S3 buckets
+
   ul.buckets-list 
     each bucket in buckets
       li
