@@ -4,5 +4,5 @@ include mixins/app-wrapper.pug
   ul.objects-list 
     each object in objects
       li
-        a(href=`/s3/buckets/${bucket}/objects/${object}`)= object
+        a(href=`/s3/buckets/${bucket}/objects/${object.Key}`)= object.Key
 

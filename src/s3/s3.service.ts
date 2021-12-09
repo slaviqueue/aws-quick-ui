@@ -1,40 +1,25 @@
 import { Injectable } from '@nestjs/common'
-import { isEmpty } from 'lodash'
-import { execAwsCli } from 'src/utils/execAwsCli'
+import { S3 } from 'aws-sdk'
 
 @Injectable()
 export class S3Service {
-  private static LOCALSTACK_S3_PORT = 4572
+  private readonly s3 = new S3({ endpoint: 'http://localhost:4572', s3ForcePathStyle: true })
 
-  public getBuckets(): string[] {
-    const output = execAwsCli('s3api list-buckets --query "Buckets[].Name"', S3Service.LOCALSTACK_S3_PORT).toString()
-    const buckets = JSON.parse(output) as any
-
-    return buckets
+  public async getBuckets() {
+    return this.s3
+      .listBuckets()
+      .promise()
+      .then((res) => res.Buckets!)
   }
 
-  public getBucketObjects(bucket: string): string[] {
-    const output = execAwsCli(
-      `s3api list-objects --query="Contents[].Key" --bucket ${bucket}`,
-      S3Service.LOCALSTACK_S3_PORT,
-    )
-      .toString()
-      .trim()
-
-    const objects = JSON.parse(output)
-
-    return objects
+  public async getBucketObjects(bucket: string) {
+    return this.s3
+      .listObjects({ Bucket: bucket })
+      .promise()
+      .then((res) => res.Contents)
   }
 
-  public getObjectPresign(bucketName: string, objectName: string): string {
-    const output = execAwsCli(`s3 presign "${bucketName}/${objectName}"`, S3Service.LOCALSTACK_S3_PORT)
-      .toString()
-      .trim()
-
-    if (isEmpty(output)) {
-      throw new Error('something went wrong wile presigning object')
-    }
-
-    return output
+  public getObjectPresign(bucket: string, object: string) {
+    return this.s3.getSignedUrlPromise('getObject', { Bucket: bucket, Key: object })
   }
 }

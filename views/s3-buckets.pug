@@ -4,5 +4,5 @@ include mixins/app-wrapper.pug
   ul.buckets-list 
     each bucket in buckets
       li
-        a(href=`/s3/buckets/${bucket}`)= bucket
+        a(href=`/s3/buckets/${bucket.Name}`)= bucket.Name
 
