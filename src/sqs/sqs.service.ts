@@ -11,4 +11,8 @@ export class SqsService {
       .promise()
       .then((res) => res.QueueUrls)
   }
+
+  public async postMessageTo(queueUrl: string, messageBody: string, messageGroupId: string) {
+    await this.sqs.sendMessage({ MessageBody: messageBody, QueueUrl: queueUrl, MessageGroupId: messageGroupId })
+  }
 }

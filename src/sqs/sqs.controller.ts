@@ -1,4 +1,5 @@
-import { Controller, Get, Param, Query, Render } from '@nestjs/common'
+import { Body, Controller, Get, Param, Post, Query, Render, Response } from '@nestjs/common'
+import { PostMessageDTO } from './dto/post-message.dto'
 import { SqsService } from './sqs.service'
 
 @Controller('sqs')
@@ -18,9 +19,18 @@ export class SqsController {
     return { queueUrl }
   }
 
-  @Get('/sqs/queues/view')
+  @Get('/queues/message/success')
+  @Render('sqs-message-post-success')
+  public async onPostMessageSuccessfully() {}
+
+  @Post('/queues/message')
   @Render('sqs-queue')
-  public async postMessageToQueue(@Query('queueUrl') queueUrl: string) {
-    return { queueUrl }
+  public async postMessageToQueue(
+    @Query('queueUrl') queueUrl: string,
+    @Body() messageData: PostMessageDTO,
+    @Response() res,
+  ) {
+    await this.sqsService.postMessageTo(queueUrl, messageData.messageBody, messageData.messageGroupId)
+    return res.redirect('/sqs/queues/message/success')
   }
 }
