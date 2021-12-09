@@ -1,12 +1,11 @@
 include mixins/app-wrapper.pug
 
 +wrapper()
-  p Viewing SQS queues
+  p Viewing SQS queue #{queueUrl}
 
-  ul.queues
-    each queueUrl in queueUrls
-      li
-        a(href=`/sqs/queues/${queueUrl}`)= queueUrl
-
-  if (!queueUrls.length)
-    p Such an empty sqs
+  form(action=`/sqs/queues/message?queueUrl=${queueUrl}`, method="post") 
+    .form-group
+      label(for="messageJson")
+      textarea(name="messageJson", placeholder="Type your json message here", id="messageJson")
+    .form-group
+      input(type="submit", title="Submit").btn.btn-primary
