@@ -20,10 +20,10 @@ async function bootstrap() {
   app.setBaseViewsDir(join(__dirname, '..', 'views'))
   app.setViewEngine('pug')
 
-  const server = await app.listen(59536) // 0 to pick a random port
-  const port = 59536 //server.address().port
+  const server = await app.listen(0)
+  const port = server.address().port
 
-  // open(`http://localhost:${port}`)
+  open(`http://localhost:${port}`)
 }
 
 bootstrap()
