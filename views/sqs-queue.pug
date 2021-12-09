@@ -3,9 +3,15 @@ include mixins/app-wrapper.pug
 +wrapper()
   p Viewing SQS queue #{queueUrl}
 
-  form(action=`/sqs/queues/message?queueUrl=${queueUrl}`, method="post") 
-    .form-group
-      label(for="messageJson")
-      textarea(name="messageJson", placeholder="Type your json message here", id="messageJson")
-    .form-group
-      input(type="submit", title="Submit").btn.btn-primary
+  form(action=`/sqs/queues/message?queueUrl=${queueUrl}`, method="post").w-25
+    h2 Send a message
+
+    .form-outline.mt-4
+      input.form-control(name="messageGroupId", id="messageGroupId")
+      label.form-label(for="messageGroupId") Message group id
+
+    .form-outline.mt-4
+      textarea.form-control(name="messageJson", id="messageJson", rows=15, cols=25)
+      label.form-label(for="messageJson") Message body
+
+    input.btn.btn-primary.mt-4(type="submit", title="Submit")
