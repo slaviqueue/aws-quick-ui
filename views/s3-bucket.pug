@@ -1,12 +1,32 @@
 include mixins/app-wrapper.pug
 
 +wrapper()
-  p Viewing S3 bucket #{bucket}
+  h2 Bucket #{bucket}
 
-  ul.objects-list 
-    each object in objects
-      li
-        a(href=`/s3/buckets/${bucket}/objects/${object.Key}`)= object.Key
+  .d-flex.mt-5
+    div.w-50
+      h3 Objects
 
-  if (!objects.length)
-    p Such an empty bucket
+      ul.objects-list.mt-4
+        each object in objects
+          li
+            a(href=`/s3/buckets/${bucket}/objects/${object.Key}`)= object.Key
+
+      if (!objects.length)
+        p Such an empty bucket
+
+    .w-50
+      h3 Upload an object
+
+      form.w-50(action=`/s3/buckets/objects?bucket=${bucket}`, method="post", enctype="multipart/form-data")
+        .form-outline.mt-4
+          input.form-control(title="Object key", id="objectKey", name="objectKey", type="text", required)
+          label.form-label(for="objectKey") Object key
+
+        .form-outline.mt-4
+          input(type="file", title="file", name="file", required)
+
+        input.mt-4.btn.btn-primary(type="submit", value="upload")
+
+    script(src="https://mdbootstrap.com/wp-content/themes/mdbootstrap4/js/mdb5/plugins/file-upload.min.js") 
+
