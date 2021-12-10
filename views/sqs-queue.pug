@@ -1,10 +1,10 @@
 include mixins/app-wrapper.pug
 
 +wrapper()
-  p Viewing SQS queue #{queueUrl}
+  h2 #{queueUrl}
 
-  form.w-25(action=`/sqs/queues/message?queueUrl=${queueUrl}`, method="post")
-    h2 Send a message
+  form.w-25.mt-5(action=`/sqs/queues/message?queueUrl=${queueUrl}`, method="post")
+    h3 Send a message
 
     .form-outline.mt-4
       input.form-control(name="messageGroupId", id="messageGroupId", required)
