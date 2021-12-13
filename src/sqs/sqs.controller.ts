@@ -30,7 +30,9 @@ export class SqsController {
     @Body() messageData: PostMessageDTO,
     @Response() res,
   ) {
-    await this.sqsService.postMessageTo(queueUrl, messageData.messageBody, messageData.messageGroupId)
-    return res.redirect('/sqs/queues/message/success')
+    await this.sqsService
+      .postMessageTo(queueUrl, messageData.messageBody, messageData.messageGroupId)
+      .catch(console.log)
+    res.redirect('/sqs/queues/message/success')
   }
 }
