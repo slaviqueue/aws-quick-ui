@@ -1,3 +1,4 @@
+import { Logger } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 import { NestExpressApplication } from '@nestjs/platform-express'
 import { config as awsConfig } from 'aws-sdk'
@@ -22,6 +23,9 @@ async function bootstrap() {
 
   const server = await app.listen(0)
   const port = server.address().port
+
+  const logger = new Logger('App')
+  logger.log(`Started on http://localhost:${port}`)
 
   open(`http://localhost:${port}`)
 }
