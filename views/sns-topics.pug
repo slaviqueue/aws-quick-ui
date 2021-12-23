@@ -1,0 +1,12 @@
+include ./mixins/app-wrapper.pug
+
++wrapper()
+  p Viewing SNS topics
+
+  ul.queues
+    each topic in topics
+      li
+        a(href=`/sns/topics/view?topicArn=${topic.TopicArn}`)= topic.TopicArn
+
+  if (!topics.length)
+    p Such an empty sns

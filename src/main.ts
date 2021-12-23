@@ -14,6 +14,9 @@ awsConfig.update({
   logger: process.stdout,
 })
 
+const isProd = process.env.NODE_ENV === 'prod'
+const serverPort = isProd ? 0 : 3000
+
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule)
 
@@ -21,13 +24,15 @@ async function bootstrap() {
   app.setBaseViewsDir(join(__dirname, '..', 'views'))
   app.setViewEngine('pug')
 
-  const server = await app.listen(0)
+  const server = await app.listen(serverPort)
   const port = server.address().port
 
   const logger = new Logger('App')
   logger.log(`Started on http://localhost:${port}`)
 
-  open(`http://localhost:${port}`)
+  if (isProd) {
+    open(`http://localhost:${port}`)
+  }
 }
 
 bootstrap()
