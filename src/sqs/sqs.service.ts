@@ -3,7 +3,7 @@ import { SQS } from 'aws-sdk'
 
 @Injectable()
 export class SqsService {
-  private readonly sqs = new SQS({ endpoint: 'http://localhost:4576' })
+  private readonly sqs = new SQS({ endpoint: 'http://localhost:4566' })
 
   public getQueueUrls() {
     return this.sqs
