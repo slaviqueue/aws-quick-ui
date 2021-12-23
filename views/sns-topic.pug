@@ -1,0 +1,47 @@
+include ./mixins/app-wrapper.pug
+
++wrapper()
+  h2 Topic #{topicArn}
+
+  .subscriptions
+    h3.mt-5 Subscriptions
+
+    table.table.table-striped.mt-4
+      tr
+        th Arn
+        th Protocol
+        th Endpoint
+      for subscription of subscriptions 
+        tr
+          td= subscription.SubscriptionArn
+          td= subscription.Protocol
+          td= subscription.Endpoint
+
+  .attributes
+    h3.mt-5 Attributes
+
+    table.table.table-striped.mt-4
+      tr
+        th Attribute
+        th Value
+      each value, attribute in attributes 
+        tr
+          td= attribute
+          td= value
+    
+    form.w-25.mt-5(action=`/sns/topics/message?topicArn=${topicArn}`, method="post")
+      h3 Send a message
+
+      .form-outline.mt-4
+        input.form-control(name="messageAttributes", id="messageAttributes")
+        label.form-label(for="messageAttributes") Message attributes
+
+      .form-outline.mt-4
+        input.form-control(name="messageGroupId", id="messageGroupId")
+        label.form-label(for="messageGroupId") Message group id
+
+      .form-outline.mt-4
+        textarea.form-control(name="messageBody", id="messageBody", rows=15, cols=25, required)
+        label.form-label(for="messageBody") Message body
+
+      input.btn.btn-primary.mt-4(type="submit", title="Submit")

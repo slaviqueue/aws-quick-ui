@@ -5,3 +5,7 @@
 .block {
   margin-top: 32px;
 }
+
+* {
+  box-sizing: border-box;
+}

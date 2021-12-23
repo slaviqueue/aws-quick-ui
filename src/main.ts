@@ -14,8 +14,9 @@ awsConfig.update({
   logger: process.stdout,
 })
 
+const DEV_PORT = 10_007
 const isProd = process.env.NODE_ENV === 'prod'
-const serverPort = isProd ? 0 : 3000
+const serverPort = isProd ? 0 : DEV_PORT
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule)
