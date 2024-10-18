@@ -8,15 +8,14 @@ import { AppModule } from './app.module'
 const open = require('open')
 
 awsConfig.update({
-  accessKeyId: 'foobar',
-  secretAccessKey: 'foobar',
-  region: 'localhost',
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  region: process.env.LOCALSTACK_REGION,
   logger: process.stdout,
 })
 
-const DEV_PORT = 10_007
-const isProd = process.env.NODE_ENV === 'prod'
-const serverPort = isProd ? 0 : DEV_PORT
+const appPort = parseInt(process.env.APP_PORT ?? '3000', 10);
+
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule)
@@ -25,15 +24,13 @@ async function bootstrap() {
   app.setBaseViewsDir(join(__dirname, '..', 'views'))
   app.setViewEngine('pug')
 
-  const server = await app.listen(serverPort)
+  const server = await app.listen(appPort)
   const port = server.address().port
 
   const logger = new Logger('App')
   logger.log(`Started on http://localhost:${port}`)
 
-  if (isProd) {
-    open(`http://localhost:${port}`)
-  }
+  open(`http://localhost:${port}`)
 }
 
 bootstrap()
