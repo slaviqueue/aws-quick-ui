@@ -10,7 +10,7 @@ export class SqsController {
   @Render('sqs-queues')
   public async getQueues() {
     const queueUrls = await this.sqsService.getQueueUrls()
-    return { queueUrls }
+    return { queueUrls: queueUrls ?? [] }
   }
 
   @Get('/queues/view')

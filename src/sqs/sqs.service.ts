@@ -3,7 +3,7 @@ import { SQS } from 'aws-sdk'
 
 @Injectable()
 export class SqsService {
-  private readonly sqs = new SQS({ endpoint: 'http://localhost:4566', region: 'us-east-1' })
+  private readonly sqs = new SQS({ endpoint: `${process.env.LOCALSTACK_ENDPOINT}`, region: `${process.env.LOCALSTACK_REGION}` })
 
   public getQueueUrls() {
     return this.sqs

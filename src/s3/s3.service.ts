@@ -3,7 +3,7 @@ import { S3 } from 'aws-sdk'
 
 @Injectable()
 export class S3Service {
-  private readonly s3 = new S3({ endpoint: 'http://localhost:4566', s3ForcePathStyle: true })
+  private readonly s3 = new S3({ endpoint: `${process.env.LOCALSTACK_ENDPOINT}`, s3ForcePathStyle: true })
 
   public async getBuckets() {
     return this.s3

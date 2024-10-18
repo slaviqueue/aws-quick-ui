@@ -4,7 +4,7 @@ import { PostMessageDTO } from './dto/post-message.dto'
 
 @Injectable()
 export class SnsService {
-  private readonly sns = new SNS({ endpoint: 'http://localhost:4566', region: 'us-east-1' })
+  private readonly sns = new SNS({ endpoint: `${process.env.LOCALSTACK_ENDPOINT}`, region: `${process.env.LOCALSTACK_REGION}` })
 
   public getTopics() {
     return this.sns.listTopics().promise()
