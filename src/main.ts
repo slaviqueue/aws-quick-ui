@@ -4,29 +4,30 @@ import { NestExpressApplication } from '@nestjs/platform-express'
 import { config as awsConfig } from 'aws-sdk'
 import { join } from 'path'
 import { AppModule } from './app.module'
+import { ConfigService } from '@nestjs/config';
+
 
 const open = require('open')
 
-awsConfig.update({
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  region: process.env.LOCALSTACK_REGION,
-  logger: process.stdout,
-})
-
-const appPort = parseInt(process.env.APP_PORT ?? '3000', 10);
-
-
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule)
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const configService = app.get<ConfigService>(ConfigService);
 
+  const port = configService.get<number>('port');
+
+  awsConfig.update({
+    accessKeyId: configService.get<string>('aws.accessKey'),
+    secretAccessKey: configService.get<string>('aws.accessSecret'),
+    region: configService.get<string>('aws.region'),
+    logger: process.stdout,
+  })
+
+  
   app.useStaticAssets(join(__dirname, '..', 'public'))
   app.setBaseViewsDir(join(__dirname, '..', 'views'))
   app.setViewEngine('pug')
 
-  const server = await app.listen(appPort)
-  const port = server.address().port
-
+  await app.listen(port)
   const logger = new Logger('App')
   logger.log(`Started on http://localhost:${port}`)
 

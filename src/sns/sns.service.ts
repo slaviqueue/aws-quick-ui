@@ -1,10 +1,19 @@
 import { Injectable } from '@nestjs/common'
 import { SNS } from 'aws-sdk'
 import { PostMessageDTO } from './dto/post-message.dto'
+import { ConfigService } from '@nestjs/config';
+
 
 @Injectable()
 export class SnsService {
-  private readonly sns = new SNS({ endpoint: `${process.env.LOCALSTACK_ENDPOINT}`, region: `${process.env.LOCALSTACK_REGION}` })
+
+  private readonly sns: SNS;
+  constructor(private readonly config: ConfigService) {
+    this.sns = new SNS({ 
+      endpoint: this.config.get<string>('aws.endpoint'),
+      region: this.config.get<string>('aws.region'),
+    })
+  }
 
   public getTopics() {
     return this.sns.listTopics().promise()
