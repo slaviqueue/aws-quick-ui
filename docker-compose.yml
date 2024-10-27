@@ -1,0 +1,9 @@
+services:
+  aws-quick-ui:
+    container_name: "aws-quick-ui"
+    build: 
+      context: .
+    ports:
+      - 3000:3000
+    env_file:
+      - .env

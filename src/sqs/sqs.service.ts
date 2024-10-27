@@ -1,9 +1,19 @@
 import { Injectable } from '@nestjs/common'
 import { SQS } from 'aws-sdk'
+import { ConfigService } from '@nestjs/config';
+
 
 @Injectable()
 export class SqsService {
-  private readonly sqs = new SQS({ endpoint: 'http://localhost:4566', region: 'us-east-1' })
+
+  private readonly sqs: SQS;
+  constructor(private readonly config: ConfigService) {
+    this.sqs = new SQS({ 
+      endpoint: this.config.get<string>('aws.endpoint'),
+      region: this.config.get<string>('aws.region'),
+    })
+  }
+
 
   public getQueueUrls() {
     return this.sqs
