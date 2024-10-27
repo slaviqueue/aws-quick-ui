@@ -1,9 +1,9 @@
-import { Module } from '@nestjs/common';
-import { SnsService } from './sns.service';
-import { SnsController } from './sns.controller';
+import { Module } from '@nestjs/common'
+import { SnsService } from './sns.service'
+import { SnsController } from './sns.controller'
 
 @Module({
   providers: [SnsService],
-  controllers: [SnsController]
+  controllers: [SnsController],
 })
 export class SnsModule {}

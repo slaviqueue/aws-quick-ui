@@ -3,17 +3,15 @@ import { NestFactory } from '@nestjs/core'
 import { NestExpressApplication } from '@nestjs/platform-express'
 import { config as awsConfig } from 'aws-sdk'
 import { join } from 'path'
+import { ConfigService } from '@nestjs/config'
+import * as open from 'open'
 import { AppModule } from './app.module'
-import { ConfigService } from '@nestjs/config';
-
-
-const open = require('open')
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  const configService = app.get<ConfigService>(ConfigService);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule)
+  const configService = app.get<ConfigService>(ConfigService)
 
-  const port = configService.get<number>('port');
+  const port = configService.get<number>('port')
 
   awsConfig.update({
     accessKeyId: configService.get<string>('aws.accessKey'),
@@ -22,7 +20,6 @@ async function bootstrap() {
     logger: process.stdout,
   })
 
-  
   app.useStaticAssets(join(__dirname, '..', 'public'))
   app.setBaseViewsDir(join(__dirname, '..', 'views'))
   app.setViewEngine('pug')

@@ -11,6 +11,8 @@ import {
   UseInterceptors,
 } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
+import { Response as TResponse } from 'express'
+import { noop } from 'lodash'
 import { PostObjectDTO } from './dto/post-object.dto'
 import { S3Service } from './s3.service'
 
@@ -43,7 +45,7 @@ export class S3Controller {
   public async upload(
     @Query('bucket') bucket: string,
     @Body() body: PostObjectDTO,
-    @Response() res,
+    @Response() res: TResponse,
     @UploadedFile() file: any,
   ) {
     await this.s3Service.upload(bucket, body.objectKey, file.buffer)
@@ -52,5 +54,7 @@ export class S3Controller {
 
   @Get('/buckets/object/upload/success')
   @Render('s3-object-upload-success')
-  public async onPostObjectSuccess() {}
+  public async onPostObjectSuccess() {
+    noop()
+  }
 }

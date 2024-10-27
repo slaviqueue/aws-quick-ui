@@ -1,19 +1,17 @@
 import { Injectable } from '@nestjs/common'
 import { S3 } from 'aws-sdk'
-import { ConfigService } from '@nestjs/config';
-
+import { ConfigService } from '@nestjs/config'
 
 @Injectable()
 export class S3Service {
-  private readonly s3: S3;
+  private readonly s3: S3
 
-  constructor(private readonly config: ConfigService) {
-    this.s3 = new S3({ 
+  public constructor(private readonly config: ConfigService) {
+    this.s3 = new S3({
       endpoint: this.config.get<string>('aws.endpoint'),
       region: this.config.get<string>('aws.region'),
-      s3ForcePathStyle: true 
-    });
-
+      s3ForcePathStyle: true,
+    })
   }
 
   public async getBuckets() {

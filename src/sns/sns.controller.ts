@@ -1,4 +1,6 @@
 import { Body, Controller, Get, Post, Query, Render, Response } from '@nestjs/common'
+import { Response as TResponse } from 'express'
+import { noop } from 'lodash'
 import { PostMessageDTO } from './dto/post-message.dto'
 import { SnsService } from './sns.service'
 
@@ -30,13 +32,15 @@ export class SnsController {
 
   @Get('topics/message/success')
   @Render('sns-message-post-success')
-  public onPostMessgaeSuccess() {}
+  public onPostMessgaeSuccess() {
+    noop()
+  }
 
   @Post('topics/message')
   public async postMessageToTopic(
     @Query('topicArn') topicArn: string,
     @Body() messagePayload: PostMessageDTO,
-    @Response() res,
+    @Response() res: TResponse,
   ) {
     const messageAttributes = messagePayload.messageAttributes ? JSON.parse(messagePayload.messageAttributes) : {}
     const message = { ...messagePayload, messageAttributes }

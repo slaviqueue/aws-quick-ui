@@ -5,7 +5,7 @@ module.exports = {
     sourceType: 'module',
   },
   plugins: ['@typescript-eslint/eslint-plugin', 'import'],
-  extends: ['plugin:@typescript-eslint/recommended', 'plugin:prettier/recommended'],
+  extends: ['plugin:@typescript-eslint/recommended', 'plugin:@typescript-eslint/eslint-recommended', 'plugin:prettier/recommended'],
   root: true,
   env: {
     node: true,
@@ -20,6 +20,8 @@ module.exports = {
     '@typescript-eslint/explicit-member-accessibility': ['error'],
     'import/no-cycle': 'error',
     complexity: ['error', { max: 5 }],
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": ["error"],
     'import/first': ['error', 'absolute-first'],
   },
 }
